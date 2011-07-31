@@ -38,6 +38,35 @@ public class Watershed {
 
     private int min, max;
     private int hpf;
+
+    public static void main (String[] args) {
+        int[][][] arr = new int[10][10][10];
+        int[] arrLin = new int[arr.length * arr[0].length * arr[0][0].length];
+
+        int n = 0;
+        for (int k=0 ; k<arr[0][0].length ; k++ )
+            for (int j=0 ; j<arr[0].length ; j++ )
+                for (int i=0 ; i<arr.length ; i++ )
+                {
+                    arr[i][j][k] = n;
+                    arrLin[n] = n;
+                    n++;
+                }
+
+        Watershed w = new Watershed(arr);
+
+        int x = 9, y = 9, z = 9;
+
+        int ind = w.dimToLin(x,y,z);
+        
+        System.out.println("arr[" + x + "][" + y + "][" + z + "] = " + arr[x][y][z]);
+        System.out.println("arrLin[" + ind + "] = " + arrLin[ind]);
+
+        int[] dim = w.linToDim(ind);
+        System.out.println("linToDim[x][y][z] = [" + dim[0] + "][" + dim[1] + "][" + dim[2] + "]");
+    }
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     
     public Watershed(int[][][] _image) {
         image = _image;
@@ -82,9 +111,7 @@ public class Watershed {
      * @return
      */
     private int dimToLin(int x,int y,int z) {
-        return (
-          x + (y * image.length) + (z * image[0].length) // TODO: check logic here
-        );
+        return ( x + (y * image.length) + (z * image[0].length * image.length) );
     }
     /**
      * Go from 1d index in linear array to 3d coordinate in voxel image
@@ -92,8 +119,13 @@ public class Watershed {
      * @param x
      * @return
      */
-    private int[] linToDim(int x) {
-        return (new int[3]); // TODO: implement this
+    private int[] linToDim(int i) {
+        int x, y, z; // 3d coords
+        z = i / (image[0].length * image.length);
+        y = (i - (z * (image[0].length * image.length))) / image.length;
+        x = (i - (y * image.length) - (z * image[0].length * image.length));
+        int[] ret = {x,y,z};
+        return ret; 
     }
 
 
