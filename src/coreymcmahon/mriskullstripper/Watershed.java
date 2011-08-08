@@ -64,6 +64,10 @@ public class Watershed {
 
         int[] dim = w.linToDim(ind);
         System.out.println("linToDim[x][y][z] = [" + dim[0] + "][" + dim[1] + "][" + dim[2] + "]");
+
+        // YOU A WINNAR!
+
+        // TODO: now you have transform logic working, start looking at neighbourhood shiz and sorting
     }
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -92,14 +96,20 @@ public class Watershed {
 
     private void sortVoxels () {
         pointers = new int[size];
-        pointerValues= new int[size];
-
+        pointerValues = new int[size];
+        
+        // Initialise arrays ready for sorting
         for (int x=0 ; x<image.length ; x++)
             for (int y=0 ; y<image[0].length ; y++)
                 for (int z=0 ; z<image[0][0].length ; z++)
                 {
-                    
+                    int index = dimToLin(x,y,z);
+                    pointers[index] = image[x][y][z];
+                    pointerValues[index] = index;
                 }
+        // TODO: test the sort below
+        MergeSort ms = new MergeSort(pointerValues,pointers);
+        ms.sort();
     }
 
     /**
@@ -133,7 +143,7 @@ public class Watershed {
      *
      */
     private void voxelToBasin () {
-
+        
     }
     /**
      * 
