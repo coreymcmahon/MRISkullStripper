@@ -1,2 +1,5 @@
-build
-nbproject
+build/
+nbproject/
+manifest.mf
+build.xml
+test/
